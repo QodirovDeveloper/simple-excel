@@ -1,0 +1,251 @@
+@import "tailwindcss";
+
+/* Kompyuter ko'rinishi. Chop etishda ham jadval chiqsin (qog'oz 640px dan tor bo'lishi mumkin) */
+@custom-variant desk {
+  @media print, (min-width: 40rem) {
+    @slot;
+  }
+}
+/* Faqat telefon ekrani */
+@custom-variant mob {
+  @media screen and (max-width: 39.99rem) {
+    @slot;
+  }
+}
+
+/* CSS o'zgaruvchilaridan Tailwind ranglari: bg-surface, text-muted, border-line, text-ti ... */
+@theme inline {
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-head: var(--head);
+  --color-hover: var(--hover);
+  --color-active: var(--active);
+  --color-section: var(--section);
+  --color-line: var(--line);
+  --color-line-2: var(--line-2);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-ink: var(--ink);
+  --color-on-ink: var(--on-ink);
+  --color-accent: var(--accent);
+  --color-on-accent: var(--on-accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-ink: var(--accent-ink);
+  --color-pos: var(--pos);
+  --color-neg: var(--neg);
+  --color-tb: var(--tb);
+  --color-tf: var(--tf);
+  --color-ti: var(--ti);
+}
+
+/* ===== Ranglar ===== */
+:root {
+  --bg: #f4f3ef;
+  --surface: #ffffff;
+  --surface-2: #f8f7f3;
+  --head: #f3f1ec;
+  --hover: #fbfaf6;
+  --line: #e6e3dc;
+  --line-2: #cfcabf;
+  --fg: #1c1a15;
+  --muted: #6e685c;
+  --faint: #b9b3a7;
+  --ink: #1c1a15;
+  --on-ink: #ffffff;
+  --pos: #1f8a55;
+  --neg: #c43c2c;
+  --accent: #f0a500;
+  --on-accent: #1c1a15;
+  --shadow: 0 1px 2px rgb(28 26 21 / 0.05), 0 4px 14px rgb(28 26 21 / 0.05);
+  /* Katak turlari: Сони — ko'k, Нархи — to'q sariq, Суммаси — yashil, Доллар — feruza, Курс — binafsha */
+  --t-qty: #2f7de1;
+  --t-price: #e07b00;
+  --t-sum: #1f9d55;
+  --t-usd: #0e9f96;
+  --t-rate: #7c5cd6;
+  --t-x: #64748b;
+  color-scheme: light;
+}
+:root[data-accent="blue"] { --accent: #2f6fed; --on-accent: #fff; }
+:root[data-accent="green"] { --accent: #1f9d55; --on-accent: #fff; }
+:root[data-accent="red"] { --accent: #e5484d; --on-accent: #fff; }
+:root[data-accent="purple"] { --accent: #7c5cd6; --on-accent: #fff; }
+
+@media screen {
+  :root.dark {
+    --bg: #14130f;
+    --surface: #1c1b17;
+    --surface-2: #24221d;
+    --head: #211f1a;
+    --hover: #22201b;
+    --line: #302d27;
+    --line-2: #48443c;
+    --fg: #f1eee7;
+    --muted: #a39d91;
+    --faint: #5d5850;
+    --ink: #f1eee7;
+    --on-ink: #14130f;
+    --pos: #45b883;
+    --neg: #ef6b5b;
+    --shadow: 0 1px 2px rgb(0 0 0 / 0.3);
+    color-scheme: dark;
+  }
+}
+
+/* Tuslar asosiy rangdan avtomatik chiqadi (qorong'i rejimga ham o'zi moslashadi) */
+:root {
+  --accent-soft: color-mix(in srgb, var(--accent) 14%, var(--surface));
+  --accent-ink: color-mix(in srgb, var(--accent) 62%, var(--fg));
+  --section: color-mix(in srgb, var(--accent) 9%, var(--surface));
+  --active: color-mix(in srgb, var(--accent) 6%, var(--surface));
+}
+
+/* Katak rangi: --tc dan chegara (--tb), ichi (--tf) va yozuv (--ti) tuslari chiqadi */
+.tone {
+  --tb: color-mix(in srgb, var(--tc, var(--muted)) 52%, var(--surface));
+  --tf: color-mix(in srgb, var(--tc, var(--muted)) 11%, var(--surface));
+  --ti: color-mix(in srgb, var(--tc, var(--muted)) 75%, var(--fg));
+}
+.tone-qty { --tc: var(--t-qty); }
+.tone-price { --tc: var(--t-price); }
+.tone-sum { --tc: var(--t-sum); }
+.tone-usd { --tc: var(--t-usd); }
+.tone-rate { --tc: var(--t-rate); }
+.tone-x { --tc: var(--t-x); }
+.tone-name { --tb: var(--line-2); --tf: var(--surface); --ti: var(--fg); }
+.tone-section { --tb: color-mix(in srgb, var(--accent) 50%, var(--surface)); --tf: var(--surface); --ti: var(--fg); }
+:root[data-cells="plain"] .tone { --tb: var(--line-2); --tf: var(--surface); --ti: var(--fg); }
+
+/* Tepadagi kartalar: Жами иш — yashil, Олинган — feruza */
+.stat-total { --tc: var(--t-sum); }
+.stat-paid { --tc: var(--t-usd); }
+:root[data-cells="color"] :is(.stat-total, .stat-paid) { border-top: 4px solid var(--tb); }
+
+/* Ranglar izohi faqat "Рангли қутилар" rejimida */
+.legend { display: none; }
+:root[data-cells="color"] .legend { display: flex; }
+
+/* Yozuv o'lchami */
+:root[data-size="s"] .zoomable { zoom: 0.9; }
+:root[data-size="l"] .zoomable { zoom: 1.15; }
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; }
+  body { background: var(--bg); color: var(--fg); font-size: 15px; line-height: 1.45; }
+  button:not(:disabled) { cursor: pointer; }
+}
+
+@layer components {
+  .card { overflow: hidden; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); box-shadow: var(--shadow); }
+
+  /* ===== Jadval qatori. Telefonda — kartochka (nomlangan joylar bilan) ===== */
+  .grid-row {
+    display: grid;
+    gap: 6px;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--line);
+    grid-template-columns: 24px 1fr 1.25fr 1fr 40px;
+    &:hover { background: var(--hover); }
+    &:focus-within { background: var(--active); box-shadow: inset 3px 0 0 var(--accent); }
+  }
+  .item-row { grid-template-areas: "no name name name act" "qty qty price sum sum"; }
+  .pay-row { grid-template-areas: "no name name name act" "usd usd rate sum sum"; }
+  .sec-row {
+    grid-template-columns: 24px 1fr auto 40px;
+    grid-template-areas: "no name sum act";
+    &, &:hover, &:focus-within { background: var(--section); }
+  }
+  .foot-row {
+    grid-template-columns: 1fr auto;
+    grid-template-areas: "name sum" "sub sub";
+    border-bottom: 0;
+    background: var(--head);
+    font-weight: 700;
+    &:hover, &:focus-within { background: var(--head); box-shadow: none; }
+  }
+  .a-no { grid-area: no; }
+  .a-name { grid-area: name; }
+  .a-qty { grid-area: qty; }
+  .a-price { grid-area: price; }
+  .a-sum { grid-area: sum; }
+  .a-usd { grid-area: usd; }
+  .a-rate { grid-area: rate; }
+  .a-sub { grid-area: sub; }
+  .a-act { grid-area: act; }
+  .a-x { grid-column: 1 / -1; }
+
+  /* Kompyuterda — hamma qatorlar bitta ustunlar qolipida (--cols).
+     Yuqoridagi telefon qoidalaridan KEYIN turishi shart: bir xil kuchli selektorlarda oxirgisi yutadi */
+  @media print, (min-width: 40rem) {
+    .grid-row {
+      grid-template-columns: var(--cols);
+      grid-template-areas: none;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 8px;
+      & > * { grid-area: auto; }
+      & > .a-act { grid-column: -2; }
+    }
+    .sec-row > .a-name { grid-column: span 3; }
+  }
+
+  /* ===== Katak: chegarali, ichi o'z rangida ===== */
+  .cell {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid var(--tb);
+    border-radius: 8px;
+    background: var(--tf);
+    &:focus-within { border-color: var(--accent); background: var(--surface); box-shadow: 0 0 0 3px var(--accent-soft); }
+  }
+  .cell-label {
+    padding: 5px 10px 0;
+    overflow: hidden;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--ti);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    @variant desk { display: none; }
+  }
+  .cell-input {
+    width: 100%;
+    min-width: 0;
+    height: 30px;
+    padding: 0 10px;
+    background: transparent;
+    font-size: 16px; /* iPhone kattalashtirib yubormasin */
+    color: var(--fg);
+    outline: none;
+    text-overflow: ellipsis;
+    &::placeholder { color: var(--faint); }
+    @variant desk { height: 36px; font-size: inherit; }
+  }
+  .a-name .cell-input { height: 42px; font-weight: 600; @variant desk { height: 36px; font-weight: 400; } }
+  .sec-row .a-name .cell-input { font-weight: 700; }
+  .cell-value {
+    padding: 0 10px;
+    overflow: hidden;
+    font-weight: 700;
+    line-height: 30px;
+    color: var(--ti);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    @variant desk { line-height: 36px; text-align: right; }
+  }
+}
+
+/* "Excel жадвал" ko'rinishi (kompyuterda): qutilar o'rniga oddiy jadval chiziqlari */
+@media print, (min-width: 40rem) {
+  :root[data-cells="plain"] .grid-row { gap: 0; padding-block: 0; }
+  :root[data-cells="plain"] .grid-row > * { align-self: stretch; border-right: 1px solid var(--line); }
+  :root[data-cells="plain"] .grid-row > :last-child { border-right: 0; }
+  :root[data-cells="plain"] .cell { border: 0; border-radius: 0; background: transparent; }
+  :root[data-cells="plain"] .cell:focus-within { box-shadow: inset 0 0 0 2px var(--accent); }
+}
